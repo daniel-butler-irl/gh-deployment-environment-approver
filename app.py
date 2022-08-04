@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import requests
 import base64
@@ -8,8 +9,21 @@ from github import GithubIntegration
 
 
 app = Flask(__name__)
+
 app_id = os.getenv("APP_ID")
-# Read the bot certificate
+error = False
+if app_id is None:
+    logging.error("APP_ID Environment Variable Must be set")
+    error = True
+if os.getenv("PRIVATE_PEM_BASE_64") is None:
+    logging.error("PRIVATE_PEM_BASE_64 Environment Variable Must be set")
+    error = True
+if os.getenv("APPROVER_TOKEN") is None:
+    logging.error("APPROVER_TOKEN Environment Variable Must be set")
+    error = True
+if error:
+    exit(1)
+
 app_key = base64.b64decode(os.getenv("PRIVATE_PEM_BASE_64")).decode('ascii')
 # Create an GitHub integration instance
 git_integration = GithubIntegration(
