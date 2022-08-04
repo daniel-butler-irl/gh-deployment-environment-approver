@@ -1,20 +1,16 @@
 import json
 import os
 import requests
+import base64
 
 from flask import Flask, request
 from github import GithubIntegration
 
 
 app = Flask(__name__)
-app_id = '225253'
+app_id = os.getenv("APP_ID")
 # Read the bot certificate
-with open(
-        os.path.normpath(os.path.expanduser(os.getenv("PATH_TO_PRIVATE_PEM"))),
-        'r'
-) as cert_file:
-    app_key = cert_file.read()
-
+app_key = base64.b64decode(os.getenv("PRIVATE_PEM_BASE_64")).decode('ascii')
 # Create an GitHub integration instance
 git_integration = GithubIntegration(
     app_id,
