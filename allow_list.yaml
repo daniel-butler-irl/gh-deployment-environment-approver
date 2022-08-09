@@ -1,0 +1,6 @@
+# Allow users in team
+allow_teams:
+  - "mergers"
+# Allow individual users
+allow_users:
+  - "daniel-butler-irl"
